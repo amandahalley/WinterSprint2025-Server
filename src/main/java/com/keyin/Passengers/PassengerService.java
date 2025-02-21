@@ -35,4 +35,18 @@ public class PassengerService {
     public void deletePassenger(Long id) {
         passengerRepository.deleteById(id);
     }
+
+    //added to updates details of an existing passenger by id
+    public Passenger updatePassenger(Long id, Passenger updatedPassenger) {
+        Passenger existingPassenger = passengerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Passenger not found"));
+
+        existingPassenger.setFirstName(updatedPassenger.getFirstName());
+        existingPassenger.setLastName(updatedPassenger.getLastName());
+        existingPassenger.setPhoneNumber(updatedPassenger.getPhoneNumber());
+
+        return passengerRepository.save(existingPassenger);
+    }
+
+
 }
