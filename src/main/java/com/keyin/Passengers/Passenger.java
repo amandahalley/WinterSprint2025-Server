@@ -1,9 +1,6 @@
 package com.keyin.Passengers;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 // uses these JPA annotations to map the class to the database
 
@@ -11,21 +8,17 @@ import jakarta.persistence.Id;
 @Entity
 public class Passenger {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    //added sequence generator to map to the database
+    @SequenceGenerator(name = "passenger_sequence", sequenceName = "passenger_sequence", allocationSize = 1, initialValue=1)
+    @GeneratedValue(generator = "passenger_sequence")
+
     private Long id; //  the primary key and its generated above.
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
     // Constructor and setters/getters
-
-    public Passenger() {}
-
-    public Passenger(String firstName, String lastName, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
 
     public Long getId() {
         return id;
