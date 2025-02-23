@@ -14,7 +14,7 @@ public class AircraftController {
     private AircraftService aircraftService; //inserts AircraftService to handle logic
 
     //for get all aircraft
-    @GetMapping("/aircrafts")
+    @GetMapping("/aircraft")
     public List<Aircraft> getAllAircrafts() {
         return aircraftService.findAllAircrafts();
     }
@@ -27,7 +27,7 @@ public class AircraftController {
 
     //for retrieving aircraft based on type/airline
     @GetMapping("/aircraft_search")
-    public List<Aircraft> searchAircrafts(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "airlineName", required = false) String airlineName{
+    public List<Aircraft> searchAircrafts(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "airlineName", required = false) String airlineName){
         List<Aircraft> results = new ArrayList<>();
 
         if (type != null) {
