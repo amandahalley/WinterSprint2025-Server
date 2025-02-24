@@ -1,22 +1,23 @@
 package com.keyin.Cities;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Set;
 import com.keyin.Airports.Airport;  
 
 @Entity
-@Table(name = "cities")
+@Table(name = "city")
 public class City {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //added sequence generator to map to the database
+    @SequenceGenerator(name = "city_sequence", sequenceName = "city_sequence", allocationSize = 1, initialValue=1)
+    @GeneratedValue(generator = "city_sequence")
 
+    private Long id;
     private String name;
     private String state;
     private int population;
-
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Airport> airports;
 
     // Constructors
     public City() {}
@@ -28,15 +29,35 @@ public class City {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getState() { return state; }
-    public void setState(String state) { this.state = state; }
+    public String getName() {
+        return name;
+    }
 
-    public int getPopulation() { return population; }
-    public void setPopulation(int population) { this.population = population; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
 }
