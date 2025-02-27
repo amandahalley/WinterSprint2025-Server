@@ -1,6 +1,10 @@
 package com.keyin.Passengers;
 
+import com.keyin.Aircraft.Aircraft;
+import com.keyin.Airports.Airport;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 // uses these JPA annotations to map the class to the database
 
@@ -17,6 +21,24 @@ public class Passenger {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+
+    // Many to many Aircraft
+    @ManyToMany
+    @JoinTable(
+            name = "passenger_aircraft",
+            joinColumns = @JoinColumn(name = "passenger_id"),
+            inverseJoinColumns = @JoinColumn(name = "aircraft_id")
+    )
+    private List<Aircraft> aircrafts;
+
+    // Many to many Airport
+    @ManyToMany
+    @JoinTable(
+            name = "passenger_airport",
+            joinColumns = @JoinColumn(name = "passenger_id"),
+            inverseJoinColumns = @JoinColumn(name = "airport_id")
+    )
+    private List<Airport> airports;
 
     // Constructor and setters/getters
 
@@ -50,6 +72,22 @@ public class Passenger {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Aircraft> getAircrafts() {
+        return aircrafts;
+    }
+
+    public void setAircrafts(List<Aircraft> aircrafts) {
+        this.aircrafts = aircrafts;
+    }
+
+    public List<Airport> getAirports() {
+        return airports;
+    }
+
+    public void setAirports(List<Airport> airports) {
+        this.airports = airports;
     }
 
     @Override
