@@ -2,6 +2,7 @@ package com.keyin.Passengers;
 
 import com.keyin.Aircraft.Aircraft;
 import com.keyin.Airports.Airport;
+import com.keyin.Cities.City;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -39,6 +40,12 @@ public class Passenger {
             inverseJoinColumns = @JoinColumn(name = "airport_id")
     )
     private List<Airport> airports;
+
+    // passengers belong to one city
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
 
     // Constructor and setters/getters
 
@@ -90,8 +97,17 @@ public class Passenger {
         this.airports = airports;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+
     @Override
     public String toString() {
-        return "Passenger{id =" + id + ", First Name ='" + firstName + "', Last Name ='" + lastName + "', Phone Number ='" + phoneNumber + "'}";
+        return "Passenger{id =" + id + ", First Name ='" + firstName + "', Last Name ='" + lastName + "', Phone Number ='" + phoneNumber + "', City = " + city.getName() + "'}";
     }
 }
