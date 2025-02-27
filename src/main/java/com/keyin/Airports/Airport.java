@@ -1,8 +1,12 @@
 package com.keyin.Airports;
 
+import com.keyin.Cities.City;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
@@ -14,6 +18,10 @@ public class Airport {
     private long id;
     private String code;
     private String name;
+
+@ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
     public long getId() {
         return id;
