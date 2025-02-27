@@ -2,9 +2,9 @@ package com.keyin.Cities;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -13,47 +13,41 @@ public class CityService {
     private CityRepository cityRepository;
 
     public List<City> getAllCities() {
-        return (List<City>) cityRepository.findAll();
+        return cityRepository.findAll();
     }
 
     public Optional<City> findCityById(Long id) {
         return cityRepository.findById(id);
     }
 
-    public City createCity(City newCity) {
-        return cityRepository.save(newCity);
-    }
-
-    public void deleteCity(Long id) {
-
-        cityRepository.deleteById(id);
-    }
-
-    public List<City> findByState(String state) {
-        return cityRepository.findByState(state);
-    }
-
-    public List<City> findByPopulation(int population) {
-        return cityRepository.findByPopulation(population);
-    }
-
-
-    //added in this find city by name
-    public City findByName(String name) {
-        return cityRepository.getCityByName(name);
+    public City createCity(City city) {
+        return cityRepository.save(city);
     }
 
     public City updateCity(Long id, City updatedCity) {
-        Optional<City> cityToUpdate = findCityById(id);
-
-        if (cityToUpdate.isPresent()) {
-            City city = cityToUpdate.get();
-            city.setName(updatedCity.getName());
-            city.setState(updatedCity.getState());   // update state
-            city.setPopulation(updatedCity.getPopulation()); // update population
-            return cityRepository.save(city);
+        if (cityRepository.existsById(id)) {
+            updatedCity.setId(id);
+            return cityRepository.save(updatedCity);
         }
         return null;
     }
 
+    public boolean deleteCity(Long id) {
+        if (cityRepository.existsById(id)) {
+            cityRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    // ✅ Fix: Convert Iterable to List before filtering
+    public List<City> searchCities(String name, String state, Integer population) {
+        List<City> cities = cityRepository.findAll(); // Ensures result is a List
+
+        return cities.stream()
+                .filter(city -> (name == null || city.getName().equalsIgnoreCase(name)) &&
+                                (state == null || city.getState().equalsIgnoreCase(state)) &&
+                                (population == null || city.getPopulation() == population))
+                .collect(Collectors.toList());
+    }
 }
