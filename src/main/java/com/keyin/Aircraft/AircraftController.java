@@ -1,6 +1,7 @@
 package com.keyin.Aircraft;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -50,4 +51,14 @@ public class AircraftController {
     public Aircraft updateAircraft(@PathVariable long id, @RequestBody Aircraft updatedAircraft) {
         return aircraftService.updateAircraft(id, updatedAircraft);
     }
+    // Assign a passenger to an aircraft
+    @PostMapping("/{aircraftId}/passenger/{passengerId}")
+    public ResponseEntity<Aircraft> addPassengerToAircraft(
+            @PathVariable Long aircraftId, @PathVariable Long passengerId) {
+        Aircraft updatedAircraft = aircraftService.addPassengerToAircraft(aircraftId, passengerId);
+        return updatedAircraft != null ? ResponseEntity.ok(updatedAircraft) : ResponseEntity.notFound().build();
+    }
+
+
 }
+

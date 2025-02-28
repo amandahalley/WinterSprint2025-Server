@@ -5,7 +5,8 @@ import com.keyin.Airports.Airport;
 import com.keyin.Cities.City;
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
+
 
 // uses these JPA annotations to map the class to the database
 
@@ -29,6 +30,11 @@ public class Passenger {
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
+     @ManyToMany(mappedBy = "passengers")
+    private Set<Aircraft> aircraft;
+        @ManyToOne
+    @JoinColumn(name = "airport_id", nullable = false)
+    private Airport airport;
 
     // Constructor and setters/getters
 
@@ -72,7 +78,11 @@ public class Passenger {
     public void setCity(City city) {
         this.city = city;
     }
-
+    public void setAirport(Airport airport) { 
+        this.airport = airport;
+    }
+    public Set<Aircraft> getAircraft() { return aircraft; }  
+    public void setAircraft(Set<Aircraft> aircraft) { this.aircraft = aircraft; }
 
     @Override
     public String toString() {

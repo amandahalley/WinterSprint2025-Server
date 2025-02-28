@@ -41,4 +41,8 @@ public class AirportService {
 
         return null;
     }
+        // Find an airport by ID
+    public Optional<Airport> findAirportById(Long id) {
+        return airportRepository.findById(id);
+    }
 }

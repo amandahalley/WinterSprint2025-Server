@@ -1,10 +1,16 @@
 package com.keyin.Passengers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import com.keyin.Airports.Airport;
+import com.keyin.Airports.AirportService;
+import com.keyin.Aircraft.Aircraft;
+
+import java.util.Set;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin //added this, allows other websites (with diff domains/ports) to access resources in this controller.
@@ -12,7 +18,10 @@ public class PassengerController {
 
     @Autowired
     private PassengerService passengerService;
-
+    
+    @Autowired
+    private AirportService airportService;
+    
     // Get all passengers
     @GetMapping("/passengers")
     public List<Passenger> getAllPassengers() {
@@ -41,5 +50,23 @@ public class PassengerController {
     @DeleteMapping("/passenger/{id}")
     public void deletePassenger(@PathVariable Long id) {
         passengerService.deletePassenger(id);
+    }
+    @GetMapping("/{id}/aircraft")
+    public ResponseEntity<Set<Aircraft>> getAircraftByPassenger(@PathVariable Long id) {
+    Set<Aircraft> aircraft = passengerService.getAircraftByPassenger(id);
+    return ResponseEntity.ok(aircraft);
+}
+     @PostMapping("/{airportId}")
+    public ResponseEntity<Passenger> addPassengerToAirport(
+            @PathVariable Long airportId, @RequestBody Passenger passenger) {
+        
+        Optional<Airport> airportOpt = airportService.findAirportById(airportId);
+        if (airportOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();  // If airport doesn't exist
+        }
+
+        passenger.setAirport(airportOpt.get());  // Assign airport to passenger
+        Passenger newPassenger = passengerService.createPassenger(passenger);
+        return ResponseEntity.ok(newPassenger);
     }
 }

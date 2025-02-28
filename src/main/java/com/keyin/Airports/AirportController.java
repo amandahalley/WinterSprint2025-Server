@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.List;
 
 @RestController
@@ -37,9 +36,9 @@ public class AirportController {
     }
 
 
-    @PostMapping("/airport")
-    public Airport createAirport(@RequestBody Airport newAirport) {
-        return airportService.createAirport(newAirport);
+    @PostMapping
+    public ResponseEntity<Airport> createAirport(@RequestBody Airport airport) {
+        return ResponseEntity.ok(airportService.createAirport(airport));
     }
 
     @PutMapping("/airport/{id}")

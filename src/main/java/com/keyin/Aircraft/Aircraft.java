@@ -1,15 +1,11 @@
 package com.keyin.Aircraft;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import com.keyin.Passengers.Passenger;
 import com.keyin.Airports.Airport;
 import jakarta.persistence.*;
 
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 public class Aircraft {
@@ -22,6 +18,15 @@ public class Aircraft {
     private String airlineName;
     private int numberOfPassengers;
 
+
+    @ManyToMany
+    @JoinTable(
+        name = "aircraft_passenger",
+        joinColumns = @JoinColumn(name = "aircraft_id"),
+        inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
+    private Set<Passenger> passengers;
+    
     @ManyToOne
     @JoinColumn(name = "airport_id", referencedColumnName = "id")
     private Airport airport;
@@ -68,4 +73,7 @@ public class Aircraft {
     public void setAirports(List<Airport> airports) {
         this.airports = airports;
     }
+    public Set<Passenger> getPassengers() { return passengers; }  
+    public void setPassengers(Set<Passenger> passengers) { this.passengers = passengers; }
 }
+
