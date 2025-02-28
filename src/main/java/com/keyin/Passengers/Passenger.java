@@ -23,27 +23,10 @@ public class Passenger {
     private String lastName;
     private String phoneNumber;
 
-    // Many to many Aircraft
-    @ManyToMany
-    @JoinTable(
-            name = "passenger_aircraft",
-            joinColumns = @JoinColumn(name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn(name = "aircraft_id")
-    )
-    private List<Aircraft> aircrafts;
-
-    // Many to many Airport
-    @ManyToMany
-    @JoinTable(
-            name = "passenger_airport",
-            joinColumns = @JoinColumn(name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn(name = "airport_id")
-    )
-    private List<Airport> airports;
 
     // passengers belong to one city
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
 
@@ -81,21 +64,6 @@ public class Passenger {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Aircraft> getAircrafts() {
-        return aircrafts;
-    }
-
-    public void setAircrafts(List<Aircraft> aircrafts) {
-        this.aircrafts = aircrafts;
-    }
-
-    public List<Airport> getAirports() {
-        return airports;
-    }
-
-    public void setAirports(List<Airport> airports) {
-        this.airports = airports;
-    }
 
     public City getCity() {
         return city;

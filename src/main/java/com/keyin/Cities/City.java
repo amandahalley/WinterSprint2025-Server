@@ -17,7 +17,7 @@ public class City {
     private String state;
     private int population;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Airport> airports;
 
     // Constructors, Getters, and Setters

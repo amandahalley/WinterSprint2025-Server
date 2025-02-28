@@ -2,8 +2,10 @@ package com.keyin.Airports;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,7 @@ public class AirportController {
         return results;
     }
 
+
     @PostMapping("/airport")
     public Airport createAirport(@RequestBody Airport newAirport) {
         return airportService.createAirport(newAirport);
@@ -45,4 +48,6 @@ public class AirportController {
 
 
     }
+
+
 }

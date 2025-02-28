@@ -19,8 +19,10 @@ public class Airport {
 
 
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
+
+
 
     public long getId() {
         return id;

@@ -22,15 +22,11 @@ public class Aircraft {
     private String airlineName;
     private int numberOfPassengers;
 
-    @ManyToMany(mappedBy = "aircrafts")
-    private List<Passenger> passengers;
+    @ManyToOne
+    @JoinColumn(name = "airport_id", referencedColumnName = "id")
+    private Airport airport;
 
-    @ManyToMany
-    @JoinTable(
-            name = "aircraft_airport",
-            joinColumns = @JoinColumn(name = "aircraft_id"),
-            inverseJoinColumns = @JoinColumn(name = "airport_id")
-    )
+
     private List<Airport> airports;
 
     public long getId() {
