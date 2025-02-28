@@ -1,8 +1,8 @@
 package com.keyin.Cities;
 
 import jakarta.persistence.*;
-import java.util.List;
 import com.keyin.Airports.Airport;
+import java.util.List;
 
 @Entity
 @Table(name = "city")
@@ -20,7 +20,7 @@ public class City {
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Airport> airports;
 
-    // Constructors
+    // Constructors, Getters, and Setters
     public City() {}
 
     public City(String name, String state, int population) {
@@ -29,19 +29,44 @@ public class City {
         this.population = population;
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getState() { return state; }
-    public void setState(String state) { this.state = state; }
+    public String getName() {
+        return name;
+    }
 
-    public int getPopulation() { return population; }
-    public void setPopulation(int population) { this.population = population; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public List<Airport> getAirports() { return airports; }
-    public void setAirports(List<Airport> airports) { this.airports = airports; }
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public List<Airport> getAirports() {
+        return airports;
+    }
+
+    public void setAirports(List<Airport> airports) {
+        this.airports = airports;
+    }
 }
+
