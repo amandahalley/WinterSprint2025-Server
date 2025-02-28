@@ -1,9 +1,13 @@
 package com.keyin.Cities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.keyin.Airports.Airport;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,9 +23,9 @@ public class City {
     private String state;
     private int population;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Airport> airports;
+    private List<Airport> airports = new ArrayList<>();
 
 
     // Constructors, Getters, and Setters
@@ -31,6 +35,12 @@ public class City {
         this.name = name;
         this.state = state;
         this.population = population;
+    }
+
+
+    public void addAirport(Airport airport) {
+        airports.add(airport);
+        airport.setCity(this);
     }
 
     public Long getId() {

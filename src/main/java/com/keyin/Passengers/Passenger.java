@@ -25,22 +25,23 @@ public class Passenger implements Serializable { // ✅ Implement Serializable
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonIgnore
     private City city;
 
     @ManyToOne
-    @JoinColumn(name = "airport_id", nullable = false)
+    @JoinColumn(name = "airport_id")
+    @JsonIgnore
     private Airport airport;
 
     @ManyToMany
     @JoinTable(
-        name = "passenger_aircraft", // ✅ Defines the join table
+        name = "passenger_aircraft",
         joinColumns = @JoinColumn(name = "passenger_id"),
         inverseJoinColumns = @JoinColumn(name = "aircraft_id")
     )
+    @JsonIgnore
     private Set<Aircraft> aircraft = new HashSet<>();
 
-    // ✅ Default constructor (JPA requires this)
+
     public Passenger() {}
 
     public Passenger(String firstName, String lastName, String phoneNumber, City city, Airport airport) {

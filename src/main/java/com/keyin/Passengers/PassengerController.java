@@ -23,40 +23,40 @@ public class PassengerController {
     private AirportService airportService;
     
     // Get all passengers
-    @GetMapping("/passengers")
+    @GetMapping("/api/passengers")
     public List<Passenger> getAllPassengers() {
         return passengerService.getAllPassengers();
     }
 
     // Get a passenger by ID
-    @GetMapping("/passenger/{id}")
+    @GetMapping("/api/passengers/{id}")
     public Passenger getPassengerById(@PathVariable Long id) {
         return passengerService.getPassengerById(id);
     }
 
     // Create a new passenger
-    @PostMapping("/passenger")
+    @PostMapping("/api/passenger")
     public Passenger createPassenger(@RequestBody Passenger passenger) {
         return passengerService.savePassenger(passenger);
     }
 
     //added in to update passenger by id
-    @PutMapping("/passenger/{id}")
+    @PutMapping("/api/passenger/{id}")
     public Passenger updatePassenger(@PathVariable Long id, @RequestBody Passenger updatedPassenger) {
         return passengerService.updatePassenger(id, updatedPassenger);
     }
 
     // Delete a passenger
-    @DeleteMapping("/passenger/{id}")
+    @DeleteMapping("/api/passenger/{id}")
     public void deletePassenger(@PathVariable Long id) {
         passengerService.deletePassenger(id);
     }
-    @GetMapping("/{id}/aircraft")
+    @GetMapping("/api/{id}/aircraft")
     public ResponseEntity<Set<Aircraft>> getAircraftByPassenger(@PathVariable Long id) {
     Set<Aircraft> aircraft = passengerService.getAircraftByPassenger(id);
     return ResponseEntity.ok(aircraft);
 }
-     @PostMapping("/{airportId}")
+    @PostMapping("/api/airports/{airportId}/passengers")
     public ResponseEntity<Passenger> addPassengerToAirport(
             @PathVariable Long airportId, @RequestBody Passenger passenger) {
         

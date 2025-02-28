@@ -1,5 +1,6 @@
 package com.keyin.Airports;
 
+import com.keyin.Cities.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,15 @@ public class AirportController {
 
     @PostMapping("/airports")
     public ResponseEntity<Airport> createAirport(@RequestBody Airport airport) {
-    return ResponseEntity.ok(airportService.createAirport(airport));
+        // Ensure that the airport has a valid city associated before saving
+        if (airport.getCity() == null || airport.getCity().getId() == null) {
+            return ResponseEntity.badRequest().body(null); // City is required
+        }
+        City city = airport.getCity(); // Get the city object
+        if (city.getId() == null) {
+            return ResponseEntity.badRequest().body(null); // Invalid city ID
+        }
+        return ResponseEntity.ok(airportService.createAirport(airport));
     }
 
 

@@ -14,20 +14,23 @@ public class AircraftController {
     @Autowired
     private AircraftService aircraftService; //inserts AircraftService to handle logic
 
+    @Autowired
+    private AircraftRepository aircraftRepository;
+
     //for get all aircraft
-    @GetMapping("/aircraft")
+    @GetMapping("/api/aircraft")
     public List<Aircraft> getAllAircrafts() {
-        return aircraftService.findAllAircrafts();
+        return (List<Aircraft>) aircraftRepository.findAll();
     }
 
     //for retrieving aircraft by ID
-    @GetMapping("/aircraft/id")
+    @GetMapping("/api/aircraft/{id}")
     public Aircraft getAircraftById(@PathVariable long id) {
         return aircraftService.findAircraftById(id);
     }
 
     //for retrieving aircraft based on type/airline
-    @GetMapping("/aircraft_search")
+    @GetMapping("/api/aircraft_search")
     public List<Aircraft> searchAircrafts(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "airlineName", required = false) String airlineName){
         List<Aircraft> results = new ArrayList<>();
 
@@ -40,19 +43,19 @@ public class AircraftController {
     }
 
     //for creating a new aircraft entry
-    @PostMapping("/aircraft")
+    @PostMapping("/api/aircraft")
     public Aircraft createAircraft(@RequestBody Aircraft newAircraft) {
         return aircraftService.createAircraft(newAircraft);
     }
 
 
     //for updating an existing aircraft by ID
-    @PutMapping("/aircraft/{id}")
+    @PutMapping("/api/aircraft/{id}")
     public Aircraft updateAircraft(@PathVariable long id, @RequestBody Aircraft updatedAircraft) {
         return aircraftService.updateAircraft(id, updatedAircraft);
     }
     // Assign a passenger to an aircraft
-    @PostMapping("/{aircraftId}/passenger/{passengerId}")
+    @PostMapping("/api/{aircraftId}/passenger/{passengerId}")
     public ResponseEntity<Aircraft> addPassengerToAircraft(
             @PathVariable Long aircraftId, @PathVariable Long passengerId) {
         Aircraft updatedAircraft = aircraftService.addPassengerToAircraft(aircraftId, passengerId);

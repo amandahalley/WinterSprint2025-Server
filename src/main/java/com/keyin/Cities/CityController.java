@@ -1,5 +1,6 @@
 package com.keyin.Cities;
 
+import com.keyin.Airports.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class CityController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private AirportService airportService;
 
     // Get all cities
    @GetMapping
@@ -75,16 +79,18 @@ public class CityController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/api/cities")
+    public ResponseEntity<City> createCityWithAirport(@RequestBody City city, @RequestBody Airport airport) {
+        City savedCity = cityService.createCity(city);
+        airport.setCity(savedCity);
+        airportService.createAirport(airport);
 
+        return ResponseEntity.ok(savedCity);
+    }
     // Get all airports in a city
-    @GetMapping("/{id}/airports")
-    public ResponseEntity<List<Airport>> getAirportsByCity(@PathVariable Long id) {
-        Optional<City> cityOptional = cityService.findCityById(id);
-        if (cityOptional.isPresent()) {
-            List<Airport> airports = cityOptional.get().getAirports();
-            return ResponseEntity.ok(airports);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{cityId}/airports")
+    public ResponseEntity<List<Airport>> getAirportsByCity(@PathVariable Long cityId) {
+        List<Airport> airports = cityService.getAirportsByCity(cityId);
+        return ResponseEntity.ok(airports);
     }
 }

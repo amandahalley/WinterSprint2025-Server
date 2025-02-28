@@ -1,5 +1,6 @@
 package com.keyin.Cities;
 
+import com.keyin.Airports.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -49,5 +50,12 @@ public class CityService {
                                 (state == null || city.getState().equalsIgnoreCase(state)) &&
                                 (population == null || city.getPopulation() == population))
                 .collect(Collectors.toList());
+    }
+
+    //ADDED
+    public List<Airport> getAirportsByCity(Long cityId) {
+        City city = cityRepository.findById(cityId)
+                .orElseThrow(() -> new RuntimeException("City not found"));
+        return city.getAirports();  // Ensure `getAirports()` returns a List, not an Object
     }
 }

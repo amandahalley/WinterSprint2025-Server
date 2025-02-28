@@ -1,5 +1,6 @@
 package com.keyin.Airports;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.keyin.Cities.City;
 import com.keyin.Passengers.Passenger;
 import jakarta.persistence.*;
@@ -22,6 +23,7 @@ public class Airport implements Serializable { // ✅ Implement Serializable
 
     @ManyToOne
     @JoinColumn(name = "city_id", referencedColumnName = "id")
+    @JsonBackReference
     private City city;
 
     @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
