@@ -40,7 +40,7 @@ public class CityService {
         return false;
     }
 
-    // ✅ Fix: Convert Iterable to List before filtering
+
     public List<City> searchCities(String name, String state, Integer population) {
         List<City> cities = cityRepository.findAll(); // Ensures result is a List
 
