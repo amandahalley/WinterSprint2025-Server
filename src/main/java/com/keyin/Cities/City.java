@@ -7,7 +7,7 @@ import com.keyin.Airports.Airport;
 import java.util.List;
 
 @Entity
-@Table(name = "city")
+@Table(name = "cities")
 public class City {
 
     @Id
