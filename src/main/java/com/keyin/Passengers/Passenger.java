@@ -3,89 +3,94 @@ package com.keyin.Passengers;
 import com.keyin.Aircraft.Aircraft;
 import com.keyin.Airports.Airport;
 import com.keyin.Cities.City;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable; // ✅ Import Serializable
+import java.util.HashSet;
 import java.util.Set;
 
-
-// uses these JPA annotations to map the class to the database
-
-
 @Entity
-public class Passenger {
+@Table(name = "passenger")
+public class Passenger implements Serializable { // ✅ Implement Serializable
+    private static final long serialVersionUID = 1L; // ✅ Add serialVersionUID
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Use IDENTITY for MySQL
+    private Long id;
 
-    //added sequence generator to map to the database
-    @SequenceGenerator(name = "passenger_sequence", sequenceName = "passenger_sequence", allocationSize = 1, initialValue=1)
-    @GeneratedValue(generator = "passenger_sequence")
-
-    private Long id; //  the primary key and its generated above.
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
-
-    // passengers belong to one city
     @ManyToOne
-    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    @JoinColumn(name = "city_id")
+    @JsonIgnore
     private City city;
 
-     @ManyToMany(mappedBy = "passengers")
-    private Set<Aircraft> aircraft;
-        @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "airport_id", nullable = false)
     private Airport airport;
 
-    // Constructor and setters/getters
+    @ManyToMany
+    @JoinTable(
+        name = "passenger_aircraft", // ✅ Defines the join table
+        joinColumns = @JoinColumn(name = "passenger_id"),
+        inverseJoinColumns = @JoinColumn(name = "aircraft_id")
+    )
+    private Set<Aircraft> aircraft = new HashSet<>();
 
-    public Long getId() {
-        return id;
-    }
+    // ✅ Default constructor (JPA requires this)
+    public Passenger() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
+    public Passenger(String firstName, String lastName, String phoneNumber, City city, Airport airport) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
         this.city = city;
-    }
-    public void setAirport(Airport airport) { 
         this.airport = airport;
     }
-    public Set<Aircraft> getAircraft() { return aircraft; }  
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public City getCity() { return city; }
+    public void setCity(City city) { this.city = city; }
+
+    public Airport getAirport() { return airport; }
+    public void setAirport(Airport airport) { this.airport = airport; }
+
+    public Set<Aircraft> getAircraft() { return aircraft; }
     public void setAircraft(Set<Aircraft> aircraft) { this.aircraft = aircraft; }
+
+    public void addAircraft(Aircraft aircraft) {
+        this.aircraft.add(aircraft);
+        aircraft.getPassengers().add(this);
+    }
+
+    public void removeAircraft(Aircraft aircraft) {
+        this.aircraft.remove(aircraft);
+        aircraft.getPassengers().remove(this);
+    }
 
     @Override
     public String toString() {
-        return "Passenger{id =" + id + ", First Name ='" + firstName + "', Last Name ='" + lastName + "', Phone Number ='" + phoneNumber + "', City = " + city.getName() + "'}";
+        return "Passenger{" +
+            "id=" + id +
+            ", First Name='" + firstName + '\'' +
+            ", Last Name='" + lastName + '\'' +
+            ", Phone Number='" + phoneNumber + '\'' +
+            ", City=" + (city != null ? city.getName() : "N/A") +
+            ", Airport=" + (airport != null ? airport.getName() : "N/A") +
+            '}';
     }
 }

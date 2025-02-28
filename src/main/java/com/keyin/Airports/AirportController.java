@@ -9,6 +9,8 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api")
+
 public class AirportController {
     @Autowired
     private AirportService airportService;
@@ -36,10 +38,11 @@ public class AirportController {
     }
 
 
-    @PostMapping
+    @PostMapping("/airports")
     public ResponseEntity<Airport> createAirport(@RequestBody Airport airport) {
-        return ResponseEntity.ok(airportService.createAirport(airport));
+    return ResponseEntity.ok(airportService.createAirport(airport));
     }
+
 
     @PutMapping("/airport/{id}")
     public Airport updateAirport(@PathVariable long id, @RequestBody Airport updatedAirport) {
