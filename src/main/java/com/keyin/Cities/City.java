@@ -1,6 +1,8 @@
 package com.keyin.Cities;
 
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.keyin.Airports.Airport;
 import java.util.List;
 
@@ -17,8 +19,10 @@ public class City {
     private String state;
     private int population;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Airport> airports;
+
 
     // Constructors, Getters, and Setters
     public City() {}

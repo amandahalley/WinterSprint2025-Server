@@ -18,11 +18,12 @@ public class CityController {
     private CityService cityService;
 
     // Get all cities
-    @GetMapping
+   @GetMapping
     public ResponseEntity<List<City>> getAllCities() {
-        List<City> cities = cityService.getAllCities();
-        return ResponseEntity.ok(cities);
-    }
+    List<City> cities = cityService.getAllCities();
+    System.out.println("Cities Retrieved: " + cities);  // Debugging Line
+    return ResponseEntity.ok(cities);
+}
 
     // Get city by ID
     @GetMapping("/{id}")
